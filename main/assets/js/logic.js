@@ -1,3 +1,5 @@
+////VARS:
+
 // variables to keep track of quiz state
 var currentQuestionIndex = 0;
 var time = questions.length * 15;
@@ -16,21 +18,27 @@ var feedbackEl = document.getElementById("feedback");
 var sfxRight = new Audio("assets/sfx/correct.wav");
 var sfxWrong = new Audio("assets/sfx/incorrect.wav");
 
+////FUNCTION DEFINITIONS:
+
 function startQuiz() {
   // hide start screen
- 
+  var startScreenEl = document.querySelector("#start-screen")
+  startScreenEl.style.display = "none"
   // un-hide questions section
-
+  console.log(questionsEl)
+  questionsEl.style.display = "block"
   // start timer
-
-  // show starting time
-
+    // set interval to call clockTick every second
+    timerId = setInterval(clockTick,1000);
+  
   getQuestion();
 }
 
 function getQuestion() {
+  var questionTitle = questionsEl.getElementsByTagName("h2");
+  console.log(questionTitle)
   // get current question object from array
-
+  console.log(questions[currentQuestionIndex])
   // update title with current question
 
   // clear out any old question choices
@@ -78,8 +86,16 @@ function quizEnd() {
 
 function clockTick() {
   // update time
+  time-- ;
+  // show starting time
+  //   assign the time var to time span text Content
+  timerEl.textContent = time;
 
   // check if user ran out of time
+  if(time <= 0) {
+    clearInterval(timerId);
+    quizEnd();
+  }
 }
 
 function saveHighscore() {
@@ -99,6 +115,7 @@ function checkForEnter(event) {
   // check if event key is enter
     // saveHighscore
 }
+////FUNCTION CALL:
 
 // user clicks button to submit initials
 submitBtn.onclick = saveHighscore;
