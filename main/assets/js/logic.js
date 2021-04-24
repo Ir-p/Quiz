@@ -1,5 +1,3 @@
-////VARS:
-
 // variables to keep track of quiz state
 var currentQuestionIndex = 0;
 var time = questions.length * 15;
@@ -18,15 +16,12 @@ var feedbackEl = document.getElementById("feedback");
 var sfxRight = new Audio("assets/sfx/correct.wav");
 var sfxWrong = new Audio("assets/sfx/incorrect.wav");
 
-////FUNCTION DEFINITIONS:
-
 function startQuiz() {
   // hide start screen
   var startScreenEl = document.querySelector("#start-screen")
   startScreenEl.style.display = "none"
   // un-hide questions section
-  console.log(questionsEl)
-  questionsEl.style.display = "block"
+  questionsEl.classList.remove("hide");
   // start timer
     // set interval to call clockTick every second
     timerId = setInterval(clockTick,1000);
@@ -35,39 +30,64 @@ function startQuiz() {
 }
 
 function getQuestion() {
-  var questionTitle = questionsEl.getElementsByTagName("h2");
-  console.log(questionTitle)
   // get current question object from array
-  console.log(questions[currentQuestionIndex])
+  var currentQuestion = questions[currentQuestionIndex];
+
   // update title with current question
+  var titleEl = document.getElementById("question-title");
+  titleEl.textContent = currentQuestion.title;
 
   // clear out any old question choices
-
+  choicesEl.innerHTML=""
+  
   // loop over choices
-
+  currentQuestion.choices.forEach(function(choice, i) {
     // create new button for each choice
+    var choiceBtn = document.createElement("button");
+    choiceBtn.setAttribute("class","choice");
+    choiceBtn.setAttribute("value", choice);
+
+    choiceBtn.textContent = i + 1 + ". " + choice;
 
     // attach click event listener to each choice
+    choiceBtn.onclick = questionClick;
 
     // display on the page
+    choicesEl.appendChild(choiceBtn);
+  });
 }
 
-function questionClick() {
-  // check if user guessed wrong
+function questionClick(event) {
+  // check if the answer is wrong
+  if (this.value !==questions[currentQuestionIndex].answer) {
+
     // penalize time
+    time -= 5;
 
+    if(time <0) {
+      time = 0;
+    }
     // display new time on page
-
+    timerEl.textContent = time;
     // play "wrong" sound effect
+    sfxWrong.play();
 
-  // else 
+    feedbackEl.textContent = "Wrong!";
+
+  }else {
     // play "right" sound effect
+    sfxRight.play();
 
-
+    feedbackEl.textContent= "Correct!"
+  }
   // flash right/wrong feedback on page for half a second
-
+  feedbackEl.setAttribute("class", "feeback");
+  setTimeout(function(){
+    feedbackEl.setAttribute("class", "feedback hide");
+  }, 1000);
+  
   // move to next question
-
+  
   // check if we've run out of questions
     // quizEnd
   // else 
