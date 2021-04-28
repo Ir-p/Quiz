@@ -85,14 +85,24 @@ function questionClick(event) {
   setTimeout(function(){
     feedbackEl.setAttribute("class", "feedback hide");
   }, 1000);
-  
+
   // move to next question
-  
+  currentQuestionIndex += 1
+
   // check if we've run out of questions
+  if (currentQuestionIndex>questions.length-1) {
     // quizEnd
-  // else 
+    quizEnd()
+
+  // else
+  } else {
     // getQuestion
-}
+    getQuestion()
+  }
+    
+   
+}  
+
 
 function quizEnd() {
   // stop timer
