@@ -99,19 +99,21 @@ function questionClick(event) {
     // getQuestion
     getQuestion()
   }
-    
    
 }  
 
 
 function quizEnd() {
   // stop timer
-
+  clearInterval(timerId)
   // show end screen
-
+  var endScreen = document.getElementById("end-screen");
+  endScreen.removeAttribute("class")
   // show final score
-
+  var finalScore = document.getElementById("final-score");
+  finalScore.textContent = time
   // hide questions section
+  questionsEl.setAttribute("class", "hide");
 }
 
 function clockTick() {
@@ -130,15 +132,22 @@ function clockTick() {
 
 function saveHighscore() {
   // get value of input box
-
+  var initials = initialsEl.value.trim()
   // make sure value wasn't empty
+  if (initials !== "") {
     // get saved scores from localstorage, or if not any, set to empty array
-
+    var userScore = JSON.parse(window.localStorage.getItem("userScore"))
     // format new score object for current user
-
+    var newScore = {
+      score: time,
+      initials: initials
+    }
+  }
     // save to localstorage
-
+    userScore.push(newScore)
+    window.localStorage.setItem("userScore", JSON.stringify(userScore));
     // redirect to next page
+
 }
 
 function checkForEnter(event) {
