@@ -11,6 +11,8 @@ var submitBtn = document.getElementById("submit");
 var startBtn = document.getElementById("start");
 var initialsEl = document.getElementById("initials");
 var feedbackEl = document.getElementById("feedback");
+var endScreen = document.getElementById("end-screen");
+var scores = []
 
 // sound effects
 var sfxRight = new Audio("assets/sfx/correct.wav");
@@ -84,7 +86,7 @@ function questionClick(event) {
   feedbackEl.setAttribute("class", "feeback");
   setTimeout(function(){
     feedbackEl.setAttribute("class", "feedback hide");
-  }, 1000);
+  }, 5000);
 
   // move to next question
   currentQuestionIndex += 1
@@ -104,16 +106,18 @@ function questionClick(event) {
 
 
 function quizEnd() {
+  var userScore = time.valueOf()
+  document.getElementById("final-score").textContent = userScore
   // stop timer
   clearInterval(timerId)
-  // show end screen
-  var endScreen = document.getElementById("end-screen");
-  endScreen.removeAttribute("class")
-  // show final score
-  var finalScore = document.getElementById("final-score");
-  finalScore.textContent = time
+  
   // hide questions section
   questionsEl.setAttribute("class", "hide");
+ 
+  // show end screen
+  endScreen.removeAttribute("class", "hide")
+  // show final score
+  // saveHighscore()
 }
 
 function clockTick() {
@@ -131,28 +135,36 @@ function clockTick() {
 }
 
 function saveHighscore() {
+  
   // get value of input box
   var initials = initialsEl.value.trim()
+  
   // make sure value wasn't empty
   if (initials !== "") {
     // get saved scores from localstorage, or if not any, set to empty array
-    var userScore = JSON.parse(window.localStorage.getItem("userScore"))
+     var newScore = {
+       socre: timerEl.textContent,
+       initials: initials
+     }
     // format new score object for current user
-    var newScore = {
-      score: time,
-      initials: initials
-    }
-  }
-    // save to localstorage
-    userScore.push(newScore)
-    window.localStorage.setItem("userScore", JSON.stringify(userScore));
-    // redirect to next page
-
+      // save to localstorage
+      scores.push(newScore)
+      localStorage.setItem("userScore", JSON.stringify(scores));
+    };
+ 
+  // redirect to next page
+  window.location.href = 'highscores.html'
 }
 
+ 
 function checkForEnter(event) {
   // check if event key is enter
-    // saveHighscore
+  // window.addEventListener("Enter", function(event) {
+  //   if (event.defaultPrevented) {
+      
+  //   // saveHighscore
+  //   }
+  // })
 }
 ////FUNCTION CALL:
 
