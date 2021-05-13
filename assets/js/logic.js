@@ -143,17 +143,22 @@ function saveHighscore() {
   if (initials !== "") {
     // get saved scores from localstorage, or if not any, set to empty array
      var newScore = {
-       socre: timerEl.textContent,
+       score: timerEl.textContent,
        initials: initials
      }
     // format new score object for current user
       // save to localstorage
       scores.push(newScore)
       localStorage.setItem("userScore", JSON.stringify(scores));
-    };
+  
  
   // redirect to next page
-  window.location.href = 'highscores.html'
+  
+ 
+    
+  }
+  window.location.href = 'highscores.html';
+   
 }
 
  
